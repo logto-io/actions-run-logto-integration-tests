@@ -55,8 +55,6 @@ runs:
         cd tests
         pnpm i
         pnpm prepack
-        # Build Logto management API client SDK
-        pnpm --filter @logto/api build
         # Install Chromium
         cd packages/integration-tests/node_modules/puppeteer
         pnpm postinstall
