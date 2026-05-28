@@ -16,6 +16,9 @@ inputs:
   db-alteration-target:
     description: "Alterations source branch"
     required: false
+  db-alteration-repository:
+    description: "Repository hosting the alterations branch. Defaults to the current repository; set to the PR head repo (e.g. a fork) to support community PRs."
+    required: false
   verbose:
     description: "Show all kinds of logs"
     type: boolean
@@ -95,9 +98,10 @@ runs:
 
     - name: DB Alteration
       if: ${{ inputs['db-alteration-target'] != '' }}
-      uses: logto-io/actions-run-db-alteration-steps@v1.0.0
+      uses: logto-io/actions-run-db-alteration-steps@v1.1.0
       with:
         branch: ${{ inputs['db-alteration-target'] }}
+        repository: ${{ inputs['db-alteration-repository'] }}
 
     - name: Run Logto
       working-directory: logto/
