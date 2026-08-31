@@ -64,7 +64,7 @@ runs:
 
     # Set up environment
     - name: Set up Postgres
-      uses: ikalnytskyi/action-setup-postgres@v5
+      uses: ikalnytskyi/action-setup-postgres@v6
 
     - name: Setup Redis
       uses: supercharge/redis-github-action@bc274cb7238cd63a45029db04ee48c07a72609fd # 1.8.1
