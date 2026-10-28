@@ -54,13 +54,30 @@ runs:
     # Set up integration test
     - name: Install dependencies and prepack
       shell: bash
+      env:
+        # Install Chrome explicitly below instead of running Puppeteer's postinstall download.
+        PUPPETEER_SKIP_DOWNLOAD: true
       run: |
         cd tests
         pnpm i
         pnpm prepack
-        # Install Chromium
-        cd packages/integration-tests/node_modules/puppeteer
-        pnpm postinstall
+
+    # Puppeteer 23's ZIP extractor leaves incomplete installs on Node 26.
+    # Use Node 22 only for the installer, keeping its dependencies locked by the workspace.
+    - name: Setup Node for browser installation
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Install Chrome
+      working-directory: tests
+      shell: bash
+      run: pnpm --filter @logto/integration-tests exec puppeteer browsers install chrome
+
+    - name: Restore Node version for integration tests
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs['node-version'] }}
 
     # Set up environment
     - name: Set up Postgres
